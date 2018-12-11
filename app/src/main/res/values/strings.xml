@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Simonev</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Simonev</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings related to navigation drawer -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_in_out">In and Out</string>
+    <string name="nav_card_center">Card Center</string>
+    <string name="nav_e_wallet_center">e-Wallet Center</string>
+    <string name="nav_save_it">Save it</string>
+    <string name="nav_awards">Awards</string>
+
+    <string name="nav_send_it">Send it</string>
+    <string name="nav_split_bill">Split Bill</string>
+    <string name="nav_pay_me">Pay Me</string>
+
+    <string name="nav_simonev_contact">Simonev Contact</string>
+    <string name="nav_find_us">Find Us</string>
+    <string name="nav_simonev_token">Simonev Token</string>
+    <string name="nav_simonev_help">Simonev Help</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Username / Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+</resources>
