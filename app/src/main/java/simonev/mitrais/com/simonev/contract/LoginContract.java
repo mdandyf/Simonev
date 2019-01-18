@@ -7,19 +7,13 @@ import simonev.mitrais.com.simonev.presenter.BasePresenter;
 
 public interface LoginContract {
     interface View {
-        void addResults(List<Login> repos);
-        void clearResults();
-        void showContentLoading();
-        void hideContentLoading();
-        void showContentError();
-        void hideContentError();
-        void showEmptyResultsView();
-        void hideEmptyResultsView();
+        void onViewCommand(String component, String error);
+        void startNewActivity(Class className);
     }
     interface Presenter extends BasePresenter<View> {
-        void load();
-        void loadMore();
-        void queryChanged(String query);
-        void repositoryClick(Login login);
+        void login(String email, String password);
+        void clearAuthTask();
+        void startNewActivity();
+        void commandView(String command);
     }
 }

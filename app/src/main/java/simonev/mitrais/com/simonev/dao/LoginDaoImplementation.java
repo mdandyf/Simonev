@@ -2,6 +2,7 @@ package simonev.mitrais.com.simonev.dao;
 
 import android.os.Build;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,19 +30,34 @@ public class LoginDaoImplementation implements LoginDao {
         int index = listData.indexOf(login.getUsername()+":"+login.getPassword());
         if(listData.get(index) != null) {
             listData.remove(listData.get(index));
-            /*listData.add(login);*/
+            return true;
         }
         return false;
     }
 
     @Override
-    public boolean delete(Long aLong) {
+    public boolean delete(Long id) {
+        final List<String> listData = Arrays.asList(getDummyData());
+        int index = Integer.valueOf(Long.toString(id));
+        if(listData.get(index) != null) {
+            listData.remove(listData.get(index));
+            return true;
+        }
         return false;
     }
 
     @Override
     public List<Login> findAll() {
-        return null;
+        final List<String> listData = Arrays.asList(getDummyData());
+        List<Login> listLogin = new ArrayList<>();
+        for(String data : listData) {
+            String[] pieces = data.split(":");
+            Login login = new Login();
+            login.setUsername(pieces[0]);
+            login.setPassword(pieces[1]);
+            listLogin.add(login);
+        }
+        return listLogin;
     }
 
     @Override
