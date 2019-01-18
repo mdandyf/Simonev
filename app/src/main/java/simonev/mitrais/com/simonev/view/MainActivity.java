@@ -10,12 +10,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import simonev.mitrais.com.simonev.R2;
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     @BindView(R2.id.nav_card_center) Integer menu03;
     @BindView(R2.id.nav_e_wallet_center) Integer menu04;
     @BindView(R2.id.action_settings) Integer menuSettings;
+    @BindString(R2.string.navigation_drawer_open) Integer navOpen;
+    @BindString(R2.string.navigation_drawer_close) Integer navClose;
 
     @OnClick(R2.id.fab) void onClickFab(View view) {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, navOpen, navClose);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R2.menu.main, menu);
         return true;
     }
 
