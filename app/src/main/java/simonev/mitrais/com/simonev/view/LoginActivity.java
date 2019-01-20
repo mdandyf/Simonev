@@ -3,7 +3,6 @@ package simonev.mitrais.com.simonev.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -12,15 +11,12 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -30,11 +26,11 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -43,6 +39,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import simonev.mitrais.com.simonev.R2;
 import simonev.mitrais.com.simonev.contract.LoginContract;
+import simonev.mitrais.com.simonev.model.Login;
 import simonev.mitrais.com.simonev.presenter.LoginPresenter;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -50,7 +47,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginContract.LoginView {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -60,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * A Presenter of the login activity
      */
-    private LoginPresenter presenter = new LoginPresenter();
+    private LoginPresenter presenter;
 
     // UI references.
     @BindView(R2.id.email) AutoCompleteTextView mEmailView;
@@ -75,12 +72,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @BindString(R2.string.error_incorrect_password) String mInorrectPassword;
 
     @OnClick(R2.id.sign_in) void click() {
-        presenter.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        // execute onLogin
+        Login login = new Login();
+        login.setUsername(mEmailView.getText().toString());
+        login.setPassword(mPasswordView.getText().toString());
+        presenter.onLoginAttempt(login);
     }
 
     @OnEditorAction(R2.id.password) boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
         if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-            presenter.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
+            Login login = new Login();
+            login.setUsername(mEmailView.getText().toString());
+            login.setPassword(mPasswordView.getText().toString());
+            presenter.onLoginAttempt(login);
             return true;
         }
         return false;
@@ -90,10 +94,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R2.layout.activity_login);
-        //Binding all butterknife bindings in here
+        presenter = new LoginPresenter();
+        presenter.attachView(this);
         ButterKnife.bind(this);
-        // Set up the login form.
         populateAutoComplete();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView(this);
     }
 
     /**
@@ -183,56 +193,68 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onViewCommand(String command, String error) {
-
-        View focusView = null;
-
-        switch (command) {
-            case "emailRequired":
-                mEmailView.setError(mStringRequired);
-                focusView = mEmailView;
-                focusView.requestFocus();
-                break;
-            case "emailInvalid":
-                mEmailView.setError(mInvalidEmail);
-                focusView = mEmailView;
-                focusView.requestFocus();
-                break;
-            case "passwordInvalid":
-                mPasswordView.setError(mInvalidPassword);
-                focusView = mPasswordView;
-                focusView.requestFocus();
-                break;
-            case "passwordIncorrect":
-                mPasswordView.setError(mInorrectPassword);
-                focusView = mPasswordView;
-                focusView.requestFocus();
-                break;
-            case "showProgress":
-                showProgress(true);
-                break;
-            case "hideProgress":
-                showProgress(false);
-                break;
-            case "resetError":
-                mEmailView.setError(null);
-                mPasswordView.setError(null);
-                break;
-        }
+    public void showEmpty() {
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
     }
 
     @Override
-    public void startNewActivity(Class className) {
-        Intent intent = new Intent(getApplicationContext(), className);
+    public void showError(String component, String message) {
+        View focusView = null;
+        switch (component) {
+            case "email":
+                mEmailView.setError(message);
+                focusView = mEmailView;
+                break;
+            case "password":
+                mEmailView.setError(message);
+                focusView = mPasswordView;
+                break;
+            default:
+                focusView = mEmailView;
+        }
+        focusView.requestFocus();
+    }
+
+    @Override
+    public String onShowErrorMessage(String errorType) {
+        String errorMessage = "";
+        switch (errorType) {
+            case "emailRequired":
+                errorMessage = mStringRequired;
+                break;
+            case "emailInvalid":
+                errorMessage =  mInvalidEmail;
+                break;
+            case "passwordInvalid":
+                errorMessage = mInvalidPassword;
+                break;
+            case "passwordIncorrect":
+                errorMessage = mInorrectPassword;
+                break;
+        }
+        return errorMessage;
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        showProgress(false);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onLoginFailed() {
+        presenter.onClearLoginTask();
     }
 
     /**
      * Shows the progress UI and hides the login form.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
+    @Override
+    public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -262,6 +284,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    @Override
+    public Class<? extends Annotation> annotationType() {
+        return null;
     }
 
 

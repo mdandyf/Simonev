@@ -1,6 +1,5 @@
 package simonev.mitrais.com.simonev.view;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -10,15 +9,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import simonev.mitrais.com.simonev.R2;
 
@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity
     @BindView(R2.id.fab) FloatingActionButton fab;
     @BindView(R2.id.drawer_layout) DrawerLayout drawer;
     @BindView(R2.id.nav_view) NavigationView navigationView;
-    @BindView(R2.id.nav_dashboard) Integer menu01;
-    @BindView(R2.id.nav_in_out) Integer menu02;
-    @BindView(R2.id.nav_card_center) Integer menu03;
-    @BindView(R2.id.nav_e_wallet_center) Integer menu04;
-    @BindView(R2.id.action_settings) Integer menuSettings;
-    @BindString(R2.string.navigation_drawer_open) Integer navOpen;
-    @BindString(R2.string.navigation_drawer_close) Integer navClose;
+    @BindView(R2.id.nav_dashboard) View menu01;
+    @BindView(R2.id.nav_in_out) View menu02;
+    @BindView(R2.id.nav_card_center) View menu03;
+    @BindView(R2.id.nav_e_wallet_center) View menu04;
+    @BindView(R2.id.action_settings) View menuSettings;
+    @BindString(R2.string.navigation_drawer_open) String navOpen;
+    @BindString(R2.string.navigation_drawer_close) String navClose;
 
     @OnClick(R2.id.fab) void onClickFab(View view) {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -48,12 +48,13 @@ public class MainActivity extends AppCompatActivity
         setContentView(R2.layout.activity_main);
         setSupportActionBar(toolbar);
 
+        ButterKnife.bind(this);
+        navigationView.setNavigationItemSelectedListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, navOpen, navClose);
+                this, drawer, toolbar, Integer.valueOf(navOpen), Integer.valueOf(navClose));
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
 
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == menuSettings) {
+        if (id == menuSettings.getId()) {
             return true;
         }
 
@@ -95,13 +96,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == menu01) {
+        if (id == menu01.getId()) {
             // Handle the camera action
-        } else if (id == menu02) {
+        } else if (id == menu02.getId()) {
 
-        } else if (id == menu03) {
+        } else if (id == menu03.getId()) {
 
-        } else if (id == menu04) {
+        } else if (id == menu04.getId()) {
 
         }
 

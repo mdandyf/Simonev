@@ -1,19 +1,24 @@
 package simonev.mitrais.com.simonev.contract;
 
-import java.util.List;
+import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
 import simonev.mitrais.com.simonev.model.Login;
-import simonev.mitrais.com.simonev.presenter.BasePresenter;
 
 public interface LoginContract {
-    interface View {
-        void onViewCommand(String component, String error);
-        void startNewActivity(Class className);
+    interface ViewAction{
+        // actions done before the login process is executed
+        void onLoginAttempt(@NonNull Login login);
+        void onClearLoginTask();
     }
-    interface Presenter extends BasePresenter<View> {
-        void login(String email, String password);
-        void clearAuthTask();
-        void startNewActivity();
-        void commandView(String command);
+
+    interface LoginView extends RemoteViews.RemoteView {
+        // actions done after the login process is executed
+        void showEmpty();
+        void showError(String component, String email);
+        void showProgress(boolean state);
+        String onShowErrorMessage(String errorType);
+        void onLoginSuccess();
+        void onLoginFailed();
     }
 }
