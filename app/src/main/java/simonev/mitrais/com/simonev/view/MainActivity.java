@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R2.id.nav_view) NavigationView navigationView;
 
     @SuppressLint("ResourceType")
-    @BindInt(R2.id.nav_camera) int navCamera;
+    @BindInt(R2.id.nav_main) int navCamera;
     @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_gallery) int navGallery;
+    @BindInt(R.id.nav_detail) int navGallery;
     @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_slideshow) int navSlideShow;
+    @BindInt(R.id.nav_detail02) int navSlideShow;
     @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_manage) int navManage;
+    @BindInt(R.id.nav_detail03) int navManage;
     @SuppressLint("ResourceType")
     @BindInt(R.id.nav_share) int navShare;
     @SuppressLint("ResourceType")
