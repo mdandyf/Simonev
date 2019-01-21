@@ -1,7 +1,11 @@
 package simonev.mitrais.com.simonev.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -25,15 +29,10 @@ import butterknife.OnItemSelected;
 import simonev.mitrais.com.simonev.R;
 import simonev.mitrais.com.simonev.R2;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R2.id.toolbar) Toolbar toolbar;
-    @BindView(R2.id.fab) FloatingActionButton fab;
     @BindView(R2.id.drawer_layout) DrawerLayout drawer;
     @BindView(R2.id.nav_view) NavigationView navigationView;
 
@@ -50,25 +49,17 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     @BindInt(R.id.nav_send) int navSend;
 
-    @OnClick(R2.id.fab)
-    public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R2.layout.activity_main);
         setSupportActionBar(toolbar);
-
         ButterKnife.bind(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -89,6 +80,33 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
+
+        toolbar.inflateMenu(R2.menu.main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.action_logout:
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreatePanelMenu(int featureId, @NonNull Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreatePanelMenu(featureId, menu);
     }
 
     @Override
@@ -98,27 +116,5 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
