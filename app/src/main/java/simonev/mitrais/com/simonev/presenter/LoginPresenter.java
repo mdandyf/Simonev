@@ -9,8 +9,6 @@ import simonev.mitrais.com.simonev.contract.LoginContract;
 import simonev.mitrais.com.simonev.dao.LoginDao;
 import simonev.mitrais.com.simonev.dao.LoginDaoImplementation;
 import simonev.mitrais.com.simonev.model.Login;
-import simonev.mitrais.com.simonev.view.LoginActivity;
-import simonev.mitrais.com.simonev.view.MainActivity;
 
 public class LoginPresenter extends BasePresenter<LoginContract.LoginView> implements LoginContract.ViewAction {
 
@@ -35,7 +33,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.LoginView> imple
         if(TextUtils.isEmpty(login.getUsername())) {
             getView().showError("email", getView().onShowErrorMessage("emailRequired"));
             success = false;
-        } else if(isUserNameValid(login.getUsername())) {
+        } else if(!isUserNameValid(login.getUsername())) {
             getView().showError("email", getView().onShowErrorMessage("emailInvalid"));
             success = false;
         }
@@ -44,7 +42,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.LoginView> imple
            getView().onLoginFailed();
         } else {
             getView().showProgress(true);
-            mAuthTask = new UserLoginTask(login.getUsername(), login.getPassword());
+            mAuthTask = new UserLoginTask(login.getUsername(), login.getPassword(), new LoginDaoImplementation(), this, getView());
             mAuthTask.execute((Void) null);
         }
     }
@@ -67,15 +65,19 @@ public class LoginPresenter extends BasePresenter<LoginContract.LoginView> imple
      * the user.
      */
 
-    private class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    protected class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         private final String mEmail;
         private final String mPassword;
-        private LoginDao loginDao = new LoginDaoImplementation();
-        private LoginPresenter presenter = new LoginPresenter();
+        private LoginDao loginDao;
+        private LoginPresenter loginPresenter;
+        private LoginContract.LoginView loginView;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        protected UserLoginTask(String email, String password, LoginDao loginDao, LoginPresenter loginPresenter, LoginContract.LoginView loginView) {
+            this.mEmail = email;
+            this.mPassword = password;
+            this.loginDao = loginDao;
+            this.loginPresenter = loginPresenter;
+            this.loginView = loginView;
         }
 
         @Override
@@ -100,20 +102,17 @@ public class LoginPresenter extends BasePresenter<LoginContract.LoginView> imple
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            presenter.onClearLoginTask();
-            presenter.getView().showProgress(false);
-
+            loginPresenter.onClearLoginTask();
             if (success) {
-                presenter.getView().onLoginSuccess();
+                loginView.onLoginSuccess();
             } else {
-                presenter.getView().showError("password", presenter.getView().onShowErrorMessage("passwordIncorect"));
+                loginView.showError("password", loginView.onShowErrorMessage("passwordIncorect"));
             }
         }
 
         @Override
         protected void onCancelled() {
-            presenter.onClearLoginTask();
-            presenter.getView().showProgress(false);
+            loginPresenter.onClearLoginTask();
         }
     }
 

@@ -37,5 +37,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
 
 </resources>

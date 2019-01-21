@@ -14,7 +14,7 @@ public class LoginDaoImplementation implements LoginDao {
             "foo@example.com:hello",
             "bar@example.com:world",
             "juki@gmail.com:slank",
-            "user@mitrais.com:user"
+            "user@mitrais.com:user1"
     };
 
     @Override
