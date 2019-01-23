@@ -116,5 +116,7 @@
 
     <string name="fragmentMain">This is Main</string>
     <string name="fragment01">This is Fragment 01</string>
+    <string name="fragment02">This is Fragment 02</string>
+    <string name="fragment03">This is Fragment 03</string>
 
 </resources>

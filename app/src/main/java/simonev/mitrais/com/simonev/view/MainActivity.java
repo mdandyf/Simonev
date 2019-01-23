@@ -28,11 +28,16 @@ import butterknife.ButterKnife;
 
 import simonev.mitrais.com.simonev.R;
 import simonev.mitrais.com.simonev.R2;
+import simonev.mitrais.com.simonev.view.fragment.Detail02Fragment;
+import simonev.mitrais.com.simonev.view.fragment.Detail03Fragment;
 import simonev.mitrais.com.simonev.view.fragment.DetailFragment;
 import simonev.mitrais.com.simonev.view.fragment.MainFragment;
 
 public class MainActivity extends FragmentActivity implements
-        MainFragment.OnFragmentInteractionListener, DetailFragment.OnFragmentInteractionListener {
+        MainFragment.OnFragmentInteractionListener,
+        DetailFragment.OnFragmentInteractionListener,
+        Detail02Fragment.OnFragmentInteractionListener,
+        Detail03Fragment.OnFragmentInteractionListener {
 
     private List<MenuItem> lastAccessNavBar;
 
@@ -58,7 +63,6 @@ public class MainActivity extends FragmentActivity implements
             setNewFragment(item);
             return true;
         });
-
         navigationView.getMenu().performIdentifierAction(R.id.nav_main, 0);
 
         toolbar.inflateMenu(R2.menu.main);
@@ -99,10 +103,10 @@ public class MainActivity extends FragmentActivity implements
                     lastAccessNavBar.remove(lastAccessNavBar.get(i));
                     setNewFragment(lastAccessNavBar.get(i-1));
                 } else {
-                    alertDialogExit("Confirm", "Are you sure to exit?");
+                    alertDialogExit("Confirm", "Are you sure to logout?");
                 }
             } else {
-                alertDialogExit("Confirm", "Are you sure to exit?");
+                alertDialogExit("Confirm", "Are you sure to logout?");
             }
         }
     }
@@ -131,10 +135,10 @@ public class MainActivity extends FragmentActivity implements
                 fragmentChange(DetailFragment.class, R.id.flContent);
             } else if (id == R.id.nav_detail02) {
                 // Handle the fragment detail 02
-                fragmentChange(MainFragment.class, R.id.flContent);
+                fragmentChange(Detail02Fragment.class, R.id.flContent);
             } else if (id == R.id.nav_detail03) {
                 // Handle the fragment detail 03
-                fragmentChange(DetailFragment.class, R.id.flContent);
+                fragmentChange(Detail03Fragment.class, R.id.flContent);
             } else if (id == R.id.nav_share) {
                 // Handle the fragment share
                 fragmentChange(MainFragment.class, R.id.flContent);
@@ -173,8 +177,9 @@ public class MainActivity extends FragmentActivity implements
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
                 dialog.dismiss();
+                startNewActivity(LoginActivity.class);
+                finish();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

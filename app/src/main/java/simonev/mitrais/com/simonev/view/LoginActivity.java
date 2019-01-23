@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.annotation.Annotation;
@@ -97,6 +99,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         presenter.attachView(this);
         ButterKnife.bind(this);
         populateAutoComplete();
+    }
+
+    @Override
+    public void onBackPressed() {
+        alertDialogExit("Confirm", "Are you sure to exit?");
     }
 
     @Override
@@ -287,6 +294,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public Class<? extends Annotation> annotationType() {
         return null;
+    }
+
+    private void alertDialogExit(String title, String message) {
+        // make an alert dialog "are you sure to exit??"
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 
