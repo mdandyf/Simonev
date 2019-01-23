@@ -1,4 +1,4 @@
-package simonev.mitrais.com.simonev.dao;
+package simonev.mitrais.com.simonev.dao.implementation;
 
 import android.os.Build;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import simonev.mitrais.com.simonev.dao.LoginDao;
 import simonev.mitrais.com.simonev.model.Login;
 
 public class LoginDaoImplementation implements LoginDao {
@@ -72,13 +73,5 @@ public class LoginDaoImplementation implements LoginDao {
 
     public String[] getDummyData() {
         return dummyData;
-    }
-
-    public void setDummyData(String[] dummyData) {
-        this.dummyData = dummyData;
-    }
-
-    private int getDummyDataLength() {
-        return this.dummyData.length;
     }
 }

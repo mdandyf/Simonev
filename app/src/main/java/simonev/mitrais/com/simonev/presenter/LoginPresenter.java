@@ -2,12 +2,11 @@ package simonev.mitrais.com.simonev.presenter;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import simonev.mitrais.com.simonev.contract.LoginContract;
 import simonev.mitrais.com.simonev.dao.LoginDao;
-import simonev.mitrais.com.simonev.dao.LoginDaoImplementation;
+import simonev.mitrais.com.simonev.dao.implementation.LoginDaoImplementation;
 import simonev.mitrais.com.simonev.model.Login;
 
 public class LoginPresenter extends BasePresenter<LoginContract.LoginView> implements LoginContract.ViewAction {
