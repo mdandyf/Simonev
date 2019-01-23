@@ -1,59 +1,39 @@
 package simonev.mitrais.com.simonev.view;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import butterknife.BindDrawable;
-import butterknife.BindInt;
-import butterknife.BindString;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnItemSelected;
+import butterknife.OnItemClick;
 import simonev.mitrais.com.simonev.R;
 import simonev.mitrais.com.simonev.R2;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity implements
+        MainFragment.OnFragmentInteractionListener, DetailFragment.OnFragmentInteractionListener {
 
     @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.drawer_layout) DrawerLayout drawer;
     @BindView(R2.id.nav_view) NavigationView navigationView;
 
-    @SuppressLint("ResourceType")
-    @BindInt(R2.id.nav_main) int navCamera;
-    @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_detail) int navGallery;
-    @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_detail02) int navSlideShow;
-    @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_detail03) int navManage;
-    @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_share) int navShare;
-    @SuppressLint("ResourceType")
-    @BindInt(R.id.nav_send) int navSend;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R2.layout.activity_main);
-        setSupportActionBar(toolbar);
+        /*((AppCompatActivity)getApplicationContext()).setSupportActionBar(toolbar);*/
         ButterKnife.bind(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,25 +41,10 @@ public class MainActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-
-            if (id == navCamera) {
-                // Handle the camera action
-            } else if (id == navGallery) {
-
-            } else if (id == navSlideShow) {
-
-            } else if (id == navManage) {
-
-            } else if (id == navShare) {
-
-            } else if (id == navSend) {
-
-            }
-
-            drawer.closeDrawer(GravityCompat.START);
+            setNewFragment(item);
             return true;
         });
+        navigationView.setCheckedItem(R.id.nav_main);
 
         toolbar.inflateMenu(R2.menu.main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -116,5 +81,57 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(String name) {
+
+    }
+
+    private void setNewFragment(MenuItem menu) {
+        int id = menu.getItemId();
+
+        Fragment fragment = null;
+        FragmentTransaction fragmentTransaction = null;
+        try {
+            if (id == R.id.nav_main) {
+                // Handle the main
+                fragmentChange(MainFragment.class, R.id.flContent);
+            } else if (id == R.id.nav_detail) {
+                // Handle the fragment detail
+                fragmentChange(DetailFragment.class, R.id.flContent);
+            } else if (id == R.id.nav_detail02) {
+                // Handle the fragment detail 02
+                fragmentChange(MainFragment.class, R.id.flContent);
+            } else if (id == R.id.nav_detail03) {
+                // Handle the fragment detail 03
+                fragmentChange(DetailFragment.class, R.id.flContent);
+            } else if (id == R.id.nav_share) {
+                // Handle the fragment share
+                fragmentChange(MainFragment.class, R.id.flContent);
+            } else if (id == R.id.nav_send) {
+                // Handle the fragment send
+                fragmentChange(DetailFragment.class, R.id.flContent);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Exception in fragment transaction " + e);
+        }
+
+        menu.setChecked(true);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void fragmentChange(Class fragmentClass, int container) throws InstantiationException, IllegalAccessException {
+        // Create new fragment and transaction
+        Fragment fragment = (Fragment) fragmentClass.newInstance();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(container, fragment);
+        //transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 }
