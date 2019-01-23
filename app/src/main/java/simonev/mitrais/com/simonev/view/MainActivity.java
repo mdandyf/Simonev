@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import butterknife.OnItemSelected;
 import simonev.mitrais.com.simonev.R;
 import simonev.mitrais.com.simonev.R2;
 import simonev.mitrais.com.simonev.view.fragment.Detail02Fragment;
@@ -58,6 +58,7 @@ public class MainActivity extends FragmentActivity implements
                 R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         navigationView.setNavigationItemSelectedListener(item -> {
             lastAccessNavBar.add(item);
             setNewFragment(item);

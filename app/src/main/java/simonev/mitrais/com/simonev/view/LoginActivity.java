@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,6 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
+import simonev.mitrais.com.simonev.R;
 import simonev.mitrais.com.simonev.R2;
 import simonev.mitrais.com.simonev.contract.LoginContract;
 import simonev.mitrais.com.simonev.model.Login;
@@ -66,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @BindView(R2.id.login_progress) View mProgressView;
     @BindView(R2.id.login_form) View mLoginFormView;
     @BindView(R2.id.sign_in) Button mEmailSignInButton;
+    @BindView(R2.id.login_fingerprint) ImageView mLoginFingerprint;
     @BindString(R2.string.permission_rationale) String mStringRationale;
     @BindString(R2.string.error_field_required) String mStringRequired;
     @BindString(R2.string.error_invalid_email) String mInvalidEmail;
@@ -78,6 +81,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         login.setUsername(mEmailView.getText().toString());
         login.setPassword(mPasswordView.getText().toString());
         presenter.onLoginAttempt(login);
+    }
+
+    @OnClick(R2.id.login_fingerprint) void click(View v) {
+        Intent intent = new Intent(getApplicationContext(), LoginFingerprintActivity.class);
+        startActivity(intent);
     }
 
     @OnEditorAction(R2.id.password) boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
