@@ -18,9 +18,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import simonev.mitrais.com.simonev.R;
 import simonev.mitrais.com.simonev.R2;
+import simonev.mitrais.com.simonev.view.fragment.DetailFragment;
+import simonev.mitrais.com.simonev.view.fragment.MainFragment;
 
 public class MainActivity extends FragmentActivity implements
         MainFragment.OnFragmentInteractionListener, DetailFragment.OnFragmentInteractionListener {
