@@ -34,7 +34,7 @@ import simonev.mitrais.com.simonev.view.fragment.MainFragment;
 public class MainActivity extends FragmentActivity implements
         MainFragment.OnFragmentInteractionListener, DetailFragment.OnFragmentInteractionListener {
 
-    private List<MenuItem> lastAccessNavBar = new ArrayList<>();
+    private List<MenuItem> lastAccessNavBar;
 
     @BindView(R2.id.toolbar) Toolbar toolbar;
     @BindView(R2.id.drawer_layout) DrawerLayout drawer;
@@ -45,6 +45,7 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R2.layout.activity_main);
         /*((AppCompatActivity)getApplicationContext()).setSupportActionBar(toolbar);*/
+        lastAccessNavBar = new ArrayList<>();
         ButterKnife.bind(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -57,7 +58,8 @@ public class MainActivity extends FragmentActivity implements
             setNewFragment(item);
             return true;
         });
-        navigationView.setCheckedItem(R.id.nav_main);
+
+        navigationView.getMenu().performIdentifierAction(R.id.nav_main, 0);
 
         toolbar.inflateMenu(R2.menu.main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
