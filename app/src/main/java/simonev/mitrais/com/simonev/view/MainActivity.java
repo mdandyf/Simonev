@@ -104,10 +104,10 @@ public class MainActivity extends FragmentActivity implements
                     lastAccessNavBar.remove(lastAccessNavBar.get(i));
                     setNewFragment(lastAccessNavBar.get(i-1));
                 } else {
-                    alertDialogExit("Confirm", "Are you sure to logout?");
+                    alertDialogLogout("Confirm", "Are you sure to logout?");
                 }
             } else {
-                alertDialogExit("Confirm", "Are you sure to logout?");
+                alertDialogLogout("Confirm", "Are you sure to logout?");
             }
         }
     }
@@ -144,8 +144,11 @@ public class MainActivity extends FragmentActivity implements
                 // Handle the fragment share
                 fragmentChange(MainFragment.class, R.id.flContent);
             } else if (id == R.id.nav_send) {
+                // Handle the fragment share
+                fragmentChange(MainFragment.class, R.id.flContent);
+            }  else if (id == R.id.nav_logout) {
                 // Handle the fragment send
-                fragmentChange(DetailFragment.class, R.id.flContent);
+                alertDialogLogout("Confirm", "Are you sure to logout?");
             }
         } catch (Exception e) {
             throw new RuntimeException("Exception in fragment transaction " + e);
@@ -170,7 +173,7 @@ public class MainActivity extends FragmentActivity implements
         transaction.commit();
     }
 
-    private void alertDialogExit(String title, String message) {
+    private void alertDialogLogout(String title, String message) {
         // make an alert dialog "are you sure to exit??"
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
