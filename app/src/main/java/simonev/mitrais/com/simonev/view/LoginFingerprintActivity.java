@@ -50,24 +50,6 @@ public class LoginFingerprintActivity extends AppCompatActivity implements Login
     }
 
     @Override
-    public String onShowErrorMessage(String errorType) {
-        switch (errorType) {
-            case "deviceOSVersion":
-                return "Your device does not support fingerprint";
-            case "deviceFingerprintSensor":
-                return "Your device doesn't support fingerprint authentication";
-            case "checkSelfPermission":
-                return "Please enable the fingerprint permission";
-            case "checkEnrolledFingerprint":
-                return "No fingerprint configured. Please register at least one fingerprint" +
-                        " in your device's Settings";
-            case "checkLockScreen":
-                return "Please enable lockscreen security in your device's Settings";
-        }
-        return null;
-    }
-
-    @Override
     public void showError(String message) {
         textView.setText(message);
     }

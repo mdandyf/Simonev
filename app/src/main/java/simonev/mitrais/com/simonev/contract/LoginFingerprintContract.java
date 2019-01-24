@@ -18,7 +18,6 @@ public interface LoginFingerprintContract {
     interface LoginView extends RemoteViews.RemoteView {
         // actions done after the login process is executed
         void showEmpty();
-        String onShowErrorMessage(String errorType);
         void showError(String message);
         void onLoginSuccess();
         void onLoginError(String message);

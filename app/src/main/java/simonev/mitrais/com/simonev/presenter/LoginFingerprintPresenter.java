@@ -86,7 +86,7 @@ public class LoginFingerprintPresenter extends BasePresenter<LoginFingerprintCon
         if(checkStatus) {
             doLogin(context, fingerprintManager);
         } else {
-            String message = getView().onShowErrorMessage(type);
+            String message = errorMessage(type);
             getView().showError(message);
         }
     }
@@ -159,7 +159,23 @@ public class LoginFingerprintPresenter extends BasePresenter<LoginFingerprintCon
                 FingerprintManager.AuthenticationResult result) {
            loginView.onLoginSuccess();
         }
+    }
 
+    private String errorMessage(String errorType) {
+        switch (errorType) {
+            case "deviceOSVersion":
+                return "Error: " + "Your device does not support fingerprint";
+            case "deviceFingerprintSensor":
+                return "Error: " + "Your device doesn't support fingerprint authentication";
+            case "checkSelfPermission":
+                return "Error: " + "Please enable the fingerprint permission";
+            case "checkEnrolledFingerprint":
+                return "Error: " + "No fingerprint configured. Please register at least one " +
+                        "fingerprint in your device's Settings";
+            case "checkLockScreen":
+                return "Error: " + "Please enable lockscreen security in your device's Settings";
+        }
+        return null;
     }
 
     private void doLogin(Context context, FingerprintManager fingerprintManager) {
