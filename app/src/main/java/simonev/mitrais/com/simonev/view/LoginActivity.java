@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @OnClick(R2.id.login_fingerprint) void click(View v) {
         Intent intent = new Intent(getApplicationContext(), LoginFingerprintActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnEditorAction(R2.id.password) boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {

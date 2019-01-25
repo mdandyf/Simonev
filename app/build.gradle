@@ -28,11 +28,20 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha02'
+
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.0'
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
+    androidTestUtil 'androidx.test:orchestrator:1.1.0'
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }

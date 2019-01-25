@@ -23,7 +23,7 @@
     <string name="nav_find_us">Find Us</string>
     <string name="nav_simonev_token">Simonev Token</string>
     <string name="nav_simonev_help">Simonev Help</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Simonev</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Username / Email</string>

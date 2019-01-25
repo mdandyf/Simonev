@@ -1,5 +1,6 @@
 package simonev.mitrais.com.simonev.view;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -8,6 +9,8 @@ import simonev.mitrais.com.simonev.contract.LoginFingerprintContract;
 import simonev.mitrais.com.simonev.presenter.LoginFingerprintPresenter;
 
 import android.app.KeyguardManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -41,7 +44,7 @@ public class LoginFingerprintActivity extends AppCompatActivity implements Login
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        alertDialogExit("Confirm", "Are you sure to exit?");
     }
 
     @Override
@@ -57,6 +60,9 @@ public class LoginFingerprintActivity extends AppCompatActivity implements Login
     @Override
     public void onLoginSuccess() {
         Toast.makeText(this, "Login using fingerprint Success!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -73,5 +79,29 @@ public class LoginFingerprintActivity extends AppCompatActivity implements Login
     @Override
     public Class<? extends Annotation> annotationType() {
         return null;
+    }
+
+    private void alertDialogExit(String title, String message) {
+        // make an alert dialog "are you sure to exit??"
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.create().show();
     }
 }
